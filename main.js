@@ -1,23 +1,64 @@
 import './style.css'
-import javascriptLogo from './javascript.svg'
-import { setupCounter } from './counter.js'
+import { app as firebase } from "./firebase-config"
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth"
+import { getFirestore, setDoc, doc, collection, onSnapshot } from "firebase/firestore"
+import { async } from '@firebase/util';
 
-document.querySelector('#app').innerHTML = `
+const auth = getAuth(firebase);
+const googleAuthProvider = new GoogleAuthProvider();
+
+const loginBtn = document.querySelector(".login");
+const logoutBtn = document.querySelector(".logout");
+const section = document.querySelector("section");
+
+loginBtn.addEventListener("click", (e) => {
+  signInWithPopup(auth, googleAuthProvider)
+  .then(auth => console.log(auth));
+});
+
+logoutBtn.addEventListener("click", (e) => {
+  signOut(auth).then((e) => {
+    console.log("logged out");
+  })
+});
+
+onAuthStateChanged(auth, user => {
+  if (user) {
+    loginBtn.classList.remove("show");
+    logoutBtn.classList.add("show");
+    // document.querySelector("h3").innerHTML = " ";
+  } else {
+    logoutBtn.classList.remove("show");
+    loginBtn.classList.add("show");
+  }
+});
+
+//firestore section
+const db = getFirestore(firebase);
+const colRef = collection(db, "todos");
+const form = document.querySelector("form");
+const input = document.querySelector("input");
+const h3 = document.querySelector("h3");
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const docRef = doc(colRef);
+  if (auth.currentUser) {
+    await setDoc(docRef, {
+      todoContent: input.value
+    })
+  } else {
+    h3.textContent = "please log in"
+  }
+});
+
+onSnapshot(colRef, (col) => {
+  section.innerHTML ="";
+  col.forEach(doc => {
+    section.innerHTML += `
   <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">
-      <img src="${javascriptLogo}" class="logo vanilla" alt="JavaScript logo" />
-    </a>
-    <h1>Hello Vite!</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite logo to learn more
-    </p>
+    <p>${doc.data().todoContent}</p>
   </div>
-`
-
-setupCounter(document.querySelector('#counter'))
+  `})
+});
