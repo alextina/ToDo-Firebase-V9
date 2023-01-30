@@ -25,3 +25,11 @@ export const onNavigate = (pathname) => {
   };
   
   root.appendChild(component(onNavigate));
+
+// Modal
+if(document.getElementById("buttonModal")) {
+
+  let modal = document.getElementById("myModal");
+  let link = document.getElementById("myModal");
+  let span = document.getElementById("myModal");
+}

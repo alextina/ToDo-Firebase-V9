@@ -5,16 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Firebase V9</title>
-    <link rel="icon" type="image/png" href="media/favicon.png" />
-    <link rel="stylesheet" href="./index.css">
-    
+    <link rel="icon" type="image/png" href="media/favicon-todo.png" />
+    <link rel="stylesheet" href="./style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet"> 
+
   </head>
   <body>
     <div class="container" id="root"></div>
-
     <footer>
-      <p>Esta página ha sido elaborada por Alejandra Castillo</p>
-      <div><p> GitHub</p><p>|</p><p>LinkedIn</p></div>
+      <p>Esta página ha sido elaborada por <a id="openModal">Alejandra Castillo</a></p>
+      <div class="modalContainer" id="mymodal">
+        <div id="modalContent">
+          <span class="close">X</span>
+          <a target="_blank" href="http://github.com/alextina">GitHub</a>
+          <a target="_blank" href="https://www.linkedin.com/in/alejandracastilloavila/">LinkedIn</a>
+        </div>
+      </div>
     </footer>
     <script type="module" src="./index.js"></script>
   </body>

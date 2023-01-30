@@ -1,4 +1,4 @@
-import { logIn, signInWithGoogle, sigUpWithEmail } from "../firebase/firestore-auth";
+import { emailVerification, logIn, signInWithGoogle, sigUpWithEmail } from "../firebase/firestore-auth";
 
 export const Welcome = (onNavigate) => {
     const section = document.createElement("section");
@@ -19,7 +19,7 @@ export const Welcome = (onNavigate) => {
     buttonGoogle.textContent = "Continue with Google";
 
     section.setAttribute("class","container")
-    logo.setAttribute("src", "media/googleLogo.png");
+    logo.setAttribute("src", "media/logo-todo.png");
     logo.setAttribute("alt", "logo");
     labelEmail.setAttribute("for","email");
     inputEmail.setAttribute("name","email");
@@ -43,8 +43,12 @@ export const Welcome = (onNavigate) => {
         logIn(email, password)
             .then((result) => {
                 const user = result.user;
-                console.log(`El correo ${user.email} se logueo.`);
-                onNavigate("/home");
+                if(user.emailVerified === false) {
+                    alert("Verifica tu email, revisa tu bandeja de entrada.")
+                } else {
+                    console.log("Email verificado");
+                    onNavigate("/home");
+                }
             }).catch((error) => {
                 console.log(error.code);
                 console.log(error.message);
@@ -58,13 +62,10 @@ export const Welcome = (onNavigate) => {
 
         sigUpWithEmail(email, password)
             .then(() => {
-                // const user = result.user;
-                // console.log(`El usuario ${user.displayName}. creo su cuenta`);
-                onNavigate("/home");
+                alert("Verifica tu correo y luego inicia sesión.");
+                emailVerification();
             }).catch((error) => {
-                console.log(error.code);
-                console.log(error.message);
-                alert(error.message);
+                alert(error.code);
             })
     });
 

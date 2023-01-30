@@ -1,4 +1,4 @@
-import { getAuth, GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth"
+import { getAuth, GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendEmailVerification } from "firebase/auth"
 import { app } from "./firebase-config.js"
 
 const auth = getAuth(app);
@@ -16,6 +16,10 @@ export function sigUpWithEmail(email, password) {
 export function logIn(email, password) {
     return signInWithEmailAndPassword(auth, email, password);
 } 
+
+export function emailVerification() {
+    return sendEmailVerification(auth.currentUser);
+}
 
 export function logOut() {
     return signOut(auth);
