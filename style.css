@@ -67,6 +67,15 @@ body{
   background-color: rgba(135, 207, 235, 0.9);
 }
 
+.error{
+  display: none;
+  margin-top: -0.5rem;
+  color: red;
+  font-size: small;
+  text-align: center;
+  width: 15rem;
+}
+
 footer{
   text-align: center;
 }
