@@ -4,6 +4,10 @@ body{
   font-size: medium;
 }
 
+.hide{
+  display: none;
+}
+
 .container{
   display: flex;
   flex-direction: column;
@@ -13,7 +17,7 @@ body{
   padding: 2rem;
 }
 
-.container img{
+.logoTodo{
   width: 15rem;
   height: auto;
   margin: 1rem;
@@ -54,26 +58,51 @@ body{
 }
 
 .googleButton{
-  width: 15rem;
+  width: 14rem;
   height: auto;
+  margin: auto;
   padding: 0.5rem;
   border-radius: 0.5rem;
   border: none;
-  background-color: skyblue;
+  background-color: #EBEBEB;
   cursor: pointer;
 }
 
 .googleButton:hover{
-  background-color: rgba(135, 207, 235, 0.9);
+  background-color: #EBEBEB;
+}
+
+.googleButton img{
+  width: 1.5rem;
+  margin: auto;
+}
+
+.googleButton span{
+  width: auto;
+  margin: auto;
+  font-family: "roboto";
 }
 
 .error{
-  display: none;
-  margin-top: -0.5rem;
-  color: red;
+  margin-top: 0.5rem;
+  color: white;
+  background-color: red;
   font-size: small;
+  padding: 0.5rem;
+  font-weight: bold;
   text-align: center;
-  width: 15rem;
+  width: 14rem;
+}
+
+.correct{
+  margin-top: 0.5rem;
+  color: white;
+  background-color: green;
+  font-size: small;
+  padding: 0.5rem;
+  font-weight: bold;
+  text-align: center;
+  width: 14rem;
 }
 
 footer{
