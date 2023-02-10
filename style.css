@@ -1,79 +1,153 @@
 body{
-  background-color: #282828;
   margin: 0;
-  padding: 0;
+  font-family: 'Comic Neue', cursive;
+  font-size: medium;
 }
 
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 0;
-  
-  height: 100%;
-  color: aliceblue;
-  height: 100vh;
-}
-
-section{
-  min-height: 94vh;
-}
-
-form{
-  margin: 1rem 0;
-}
-
-input{
-  min-width: 16rem;
-  width: 80%;
-  height: 2rem;
-  border-radius:10px;
-  border: none;
-  outline: none;
-  text-align: center;
-  font-size: 1.2rem;
-  color: #282828;
-}
-
-p{
-  margin: .6rem;
-  padding: .8rem;
-  border-radius: 8px;
-  background-color: rgb(53, 150, 255);
-}
-
-button{
+.hide{
   display: none;
-  font-size: 1.2rem;
-  color: #3a3a3a;
-  position: relative;
-  padding: auto;
+}
+
+.container{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  height: auto;
+  padding: 2rem;
+}
+
+.logoTodo{
+  width: 15rem;
+  height: auto;
+  margin: 1rem;
+}
+
+.container label{
+  text-align: center;
+}
+
+.container input{
+  text-align: center;
+  width: 15rem;
+  height: auto;
+  margin: auto;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid salmon;
+  background-color: rgba(250, 128, 114, 0.15);
+}
+
+.container div{
+  display: flex;
+  gap: 1rem;
+}
+
+.smallButton{
+  width: 7rem;
+  height: auto;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: none;
+  background-color: skyblue;
   cursor: pointer;
-  margin: 1rem 0 0 0;
 }
 
-.show{
-  display: block;
+.smallButton:hover{
+  background-color: rgba(135, 207, 235, 0.9);
 }
 
-span{
-  position: relative;
-  top: -8px;
+.googleButton{
+  width: 14rem;
+  height: auto;
+  margin: auto;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: none;
+  background-color: #EBEBEB;
+  cursor: pointer;
 }
 
-img{
-  width: 2rem;
+.googleButton:hover{
+  background-color: #EBEBEB;
 }
 
-.logged-out{
-  position: relative;
-  top: 0px;
+.googleButton img{
+  width: 1.5rem;
+  margin: auto;
 }
 
-h3{
+.googleButton span{
+  width: auto;
+  margin: auto;
+  font-family: "roboto";
+}
+
+.error{
+  margin-top: 0.5rem;
+  color: white;
+  background-color: red;
+  font-size: small;
+  padding: 0.5rem;
+  font-weight: bold;
+  text-align: center;
+  width: 14rem;
+}
+
+.correct{
+  margin-top: 0.5rem;
+  color: white;
+  background-color: green;
+  font-size: small;
+  padding: 0.5rem;
+  font-weight: bold;
+  text-align: center;
+  width: 14rem;
+}
+
+footer{
+  text-align: center;
+}
+
+footer div{
+  display: flex;
+  gap: 1rem;
+}
+
+footer p{
+  padding: 1rem;
+  margin: auto;
+ }
+
+/* Modal */
+.modalContainer{
+  display: none;
+  position: fixed;
+  z-index: 1;
+  padding-top: 100px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+
+.modalContent{
+  background-color: rgba(28, 28, 28, 0.75);
+  margin: auto;
+  padding: 2rem;
+  border: 1px solid rgba(28, 28, 28, 100);
+  width: 60%;
+}
+
+.close{
   color: red;
+  float: right;
+  font-weight: bold;
+}
+
+.close:hover, .close:focus{
+  color: #000000;
+  text-decoration: none;
+  cursor: pointer;
 }
