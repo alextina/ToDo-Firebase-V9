@@ -151,3 +151,17 @@ footer p{
   text-decoration: none;
   cursor: pointer;
 }
+
+#divAllTasks{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  background-color: antiquewhite;
+  margin: 2rem 0 2rem 0;
+}
+
+#divAllTasks div{
+  background-color: aquamarine;
+}

@@ -1,5 +1,9 @@
-import { Home } from "./componets/Home.js";
-import { Welcome } from "./componets/Welcome.js";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { app as firebase } from "./firebase/firebase-config";
+import { Home } from "./componets/Home";
+import { Welcome } from "./componets/Welcome";
+
+const auth = getAuth(firebase);
 
 const root = document.getElementById('root');
 const routes = {
@@ -26,10 +30,10 @@ export const onNavigate = (pathname) => {
   
   root.appendChild(component(onNavigate));
 
-// Modal
-if(document.getElementById("buttonModal")) {
-
-  let modal = document.getElementById("myModal");
-  let link = document.getElementById("myModal");
-  let span = document.getElementById("myModal");
-}
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      onNavigate('/home');
+    } else {
+      onNavigate('/');
+    }
+  });
