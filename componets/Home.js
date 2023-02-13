@@ -41,12 +41,8 @@ export const Home = (onNavigate) => {
                     });
                     html += `
                     <div class= "divOneTask">
-                    <div class="info">
-                    <p>${task.userEmail}</p>
-                    <p>${formattedDate}.</p>
-                    </div>
-                    <p class= "oneTask">${task.task}</p>
-                    
+                    <p class = "oneTask">${task.task}</p>
+                    <p class = "info">Por ${task.userEmail} el ${formattedDate}.</p>                    
                     </div> 
                     `
                 })

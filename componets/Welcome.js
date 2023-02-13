@@ -23,7 +23,7 @@ export const Welcome = (onNavigate) => {
     const validForm = document.createElement("p");
     const messageForm = document.createElement("p");
 
-    form.className ="container";
+    form.className ="containerForm";
     form.autocomplete = "off";
     logo.src = logoImg;
     logo.alt = "logo-todo";
