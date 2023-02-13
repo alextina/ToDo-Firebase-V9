@@ -11,7 +11,7 @@ const auth = getAuth(firebase);
 const db = getFirestore(firebase);
 
 
-export const saveTask = (task) => {
+export function saveTask (task) {
     const user = auth.currentUser;
     addDoc(collection(db, "tasks"), {
         task,
@@ -21,10 +21,6 @@ export const saveTask = (task) => {
     });
 };
 
-export const getTasks = () => {
+export function getTasks () {
     return getDocs(collection(db, "tasks"))
 };
-
-// export const onGetTasks = (callback) => {
-//     return onSnapshot(collection(db, "tasks"), callback)
-// }

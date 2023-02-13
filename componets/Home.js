@@ -40,16 +40,19 @@ export const Home = (onNavigate) => {
                       year: "2-digit"
                     });
                     html += `
-                    <div>
-                    <p class= "date">Tarea publicada el ${formattedDate}.</p>
+                    <div class= "divOneTask">
+                    <div class="info">
+                    <p>${task.userEmail}</p>
+                    <p>${formattedDate}.</p>
+                    </div>
                     <p class= "oneTask">${task.task}</p>
-                    <p class= "userEmail">${task.userEmail}</p>
+                    
                     </div> 
                     `
                 })
                 divAllTask.innerHTML = html;
             }).catch((error) => {
-                alert(error)
+                console.log(error);
             })
     }
     getData();
@@ -60,7 +63,7 @@ export const Home = (onNavigate) => {
             .then(() => {
                 onNavigate("/");
             }).catch((error) => {
-                alert(error)
+                console.log(error);
             })
     });
 

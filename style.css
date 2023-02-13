@@ -157,11 +157,27 @@ footer p{
   flex-direction: column;
   gap: 1rem;
   justify-content: center;
-  align-items: center;
   background-color: antiquewhite;
   margin: 2rem 0 2rem 0;
 }
 
 #divAllTasks div{
   background-color: aquamarine;
+}
+
+.divOneTask{
+  display: flex;
+  flex-direction: column;
+}
+
+.info{
+  display: flex;
+  flex-direction: row;
+  font-size: 0.6rem;
+  font-family: Arial, Helvetica, sans-serif;
+  color: gray;
+}
+
+.info p{
+  margin: 1 rem;
 }

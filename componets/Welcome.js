@@ -21,6 +21,7 @@ export const Welcome = (onNavigate) => {
     const txtGoogle = document.createElement("span");
     const invalidForm = document.createElement("p");
     const validForm = document.createElement("p");
+    const messageForm = document.createElement("p");
 
     form.className ="container";
     form.autocomplete = "off";
@@ -64,7 +65,10 @@ export const Welcome = (onNavigate) => {
     invalidForm.textContent = "Verifica los campos.";
     validForm.className = "hide";
     validForm.id = "correct-form";
-    validForm.textContent = "Formulario enviado correctamente";
+    validForm.textContent = "Formulario enviado correctamente, ahora verifica tu correo";
+    messageForm.className = "hide";
+    messageForm.id = "message-form";
+    messageForm.textContent = "Verifica tu email.";
 
     // validando formularios (importando fx desde validate-inputs.js)
     inputEmail.addEventListener('keyup', validateForm);
@@ -72,7 +76,7 @@ export const Welcome = (onNavigate) => {
     inputPassword.addEventListener('keyup', validateForm);
     inputPassword.addEventListener('blur', validateForm);
 
-    // Crear cuenta con correo y contraseña 
+    // fx para crear una cuenta con correo y contraseña
     function signUp () {
         const email = inputEmail.value;
         const password = inputPassword.value;
@@ -80,13 +84,13 @@ export const Welcome = (onNavigate) => {
         sigUpWithEmail(email, password)
             .then((result) => {
                 const user = result.user;
-                alert("Verifica tu correo y luego inicia sesión.");
                 emailVerification();
             }).catch((error) => {
-                alert(error.code);
+                console.log(error.code);
             })
     };
 
+    // dandole funcionalidad a al foromnulario de crear cuenta
     form.addEventListener("submit", (e) => {
         e.preventDefault();
         if (inputComplet.email && inputComplet.password) {
@@ -100,8 +104,8 @@ export const Welcome = (onNavigate) => {
         }
     });
 
-    // Ingreso de sesión con correo y contraseña
-    buttonLogin.addEventListener("click", () => {
+    // fx para iniciar sesión con correo y contraseña
+    function emailLogin () {
         const email = inputEmail.value;
         const password = inputPassword.value;
 
@@ -109,32 +113,53 @@ export const Welcome = (onNavigate) => {
             .then((result) => {
                 const user = result.user;
                 if(user.emailVerified === false) {
-                    document.getElementById("error-login").classList.replace("hide", "error");
+                    document.getElementById("message-form").classList.replace("hide", "correct");
+                    // alert("Verifica tu email.")
                 } else {
                     onNavigate("/home");
                 }
             }).catch((error) => {
-                alert(error)
-            })
+                console.log(error);
+            });
+    };
+
+    // dandole funcionalidad al botón de iniciar sesión
+    buttonLogin.addEventListener("click", () => {
+        if (inputComplet.email && inputComplet.password) {
+            emailLogin();
+        } else {
+            alert("Revisa tus datos.");
+        }
     });
 
-    // Ingreso de sesión con google
+    // dandole funcionalidad al botón de google
     buttonGoogle.addEventListener("click", () => {
         signInWithGoogle()
             .then((result) => {
                 const user = result.user;
                 onNavigate("/home");
             }).catch((error) => {
-                console.log(error.code);
-                console.log(error.message);
+                console.log(error);
             })
     });
-
-
     
     // Mostrando el contenido
     buttonGoogle.append(imgGoogle, txtGoogle);
     divButtons.append(buttonLogin, buttonSignup);
-    form.append(logo, labelEmail, inputEmail, errorEmail, labelPassword, inputPassword, errorPassword, divButtons, buttonGoogle, validForm, invalidForm, invalidLogin);
+    form.append(
+        logo,
+        labelEmail,
+        inputEmail,
+        errorEmail,
+        labelPassword,
+        inputPassword,
+        errorPassword,
+        divButtons,
+        buttonGoogle,
+        validForm,
+        invalidForm,
+        invalidLogin,
+        messageForm
+        );
     return form;
 };
