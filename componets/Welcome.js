@@ -1,5 +1,6 @@
 import logoImg from "../media/logo-todo.png";
-import logoGoogle from "../media/google-logo.png";
+import buttonGoogle1 from "../media/btn_google_signin_dark_normal_web.png";
+import buttonGoogle2 from "../media/btn_google_signin_dark_pressed_web.png";
 import { emailVerification, logIn, signInWithGoogle, sigUpWithEmail } from "../firebase/auth";
 import { inputComplet, validateForm } from "../solo-functions.js/validate-inputs";
 
@@ -13,17 +14,15 @@ export const Welcome = (onNavigate) => {
     const inputPassword = document.createElement("input");
     const errorPassword = document.createElement("p");
     const divButtons = document.createElement("div");
-    const buttonLogin = document.createElement("button");
-    const invalidLogin = document.createElement("p");
-    const buttonSignup = document.createElement("button");
-    const buttonGoogle = document.createElement("div");
+    const buttonSignIn = document.createElement("button");
+    const invalidSignIn = document.createElement("p");
+    const buttonSignUp = document.createElement("button");
     const imgGoogle = document.createElement("img");
-    const txtGoogle = document.createElement("span");
     const invalidForm = document.createElement("p");
     const validForm = document.createElement("p");
     const messageForm = document.createElement("p");
 
-    form.className ="containerForm";
+    form.className ="container welcome";
     form.autocomplete = "off";
     logo.src = logoImg;
     logo.alt = "logo-todo";
@@ -46,20 +45,24 @@ export const Welcome = (onNavigate) => {
     errorPassword.className = "hide";
     errorPassword.id = "error-password";
     errorPassword.textContent = "La contraseña debe tener entre 8 y 16 carácteres. Al menos un número, al menos una mayúscula y al menos un símbolo. Sin espacios."
-    buttonLogin.type = "button";
-    buttonLogin.className = "smallButton";
-    buttonLogin.textContent = "LogIn";
-    invalidLogin.className = "hide";
-    invalidLogin.id = "error-login";
-    invalidLogin.textContent = "Verifica tu correo y luego inicia sesión";
-    buttonSignup.type = "submit";
-    buttonSignup.className = "smallButton";
-    buttonSignup.textContent = "Sign Up";
-    buttonGoogle.type = "button";
-    buttonGoogle.className = "googleButton";
-    imgGoogle.src = logoGoogle;
+    buttonSignIn.type = "button";
+    buttonSignIn.className = "smallButton";
+    buttonSignIn.textContent = "SignIn";
+    invalidSignIn.className = "hide";
+    invalidSignIn.id = "error-login";
+    invalidSignIn.textContent = "Verifica tu correo y luego inicia sesión";
+    buttonSignUp.type = "submit";
+    buttonSignUp.className = "smallButton";
+    buttonSignUp.textContent = "SignUp";
+    imgGoogle.src = buttonGoogle1;
+    imgGoogle.onmouseout = () => {
+        imgGoogle.src = buttonGoogle1;
+    }
+    imgGoogle.onmouseover = () => {
+        imgGoogle.src = buttonGoogle2;
+    }
     imgGoogle.alt = "logo-google";
-    txtGoogle.textContent = "Continuar con Google";
+    imgGoogle.className = "googleButton";
     invalidForm.className = "hide";
     invalidForm.id = "error-form";
     invalidForm.textContent = "Verifica los campos.";
@@ -124,7 +127,7 @@ export const Welcome = (onNavigate) => {
     };
 
     // dandole funcionalidad al botón de iniciar sesión
-    buttonLogin.addEventListener("click", () => {
+    buttonSignIn.addEventListener("click", () => {
         if (inputComplet.email && inputComplet.password) {
             emailLogin();
         } else {
@@ -133,7 +136,7 @@ export const Welcome = (onNavigate) => {
     });
 
     // dandole funcionalidad al botón de google
-    buttonGoogle.addEventListener("click", () => {
+    imgGoogle.addEventListener("click", () => {
         signInWithGoogle()
             .then((result) => {
                 const user = result.user;
@@ -144,8 +147,8 @@ export const Welcome = (onNavigate) => {
     });
     
     // Mostrando el contenido
-    buttonGoogle.append(imgGoogle, txtGoogle);
-    divButtons.append(buttonLogin, buttonSignup);
+    // buttonGoogle.append(imgGoogle, txtGoogle);
+    divButtons.append(buttonSignIn, buttonSignUp);
     form.append(
         logo,
         labelEmail,
@@ -155,10 +158,10 @@ export const Welcome = (onNavigate) => {
         inputPassword,
         errorPassword,
         divButtons,
-        buttonGoogle,
+        imgGoogle,
         validForm,
         invalidForm,
-        invalidLogin,
+        invalidSignIn,
         messageForm
         );
     return form;

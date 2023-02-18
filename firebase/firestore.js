@@ -1,13 +1,16 @@
-import { getAuth } from "firebase/auth";
 import { addDoc,
     collection,
-    getDocs,
+    deleteDoc,
+    doc,
+    getDoc,
     getFirestore,
     onSnapshot,
-    serverTimestamp } from "firebase/firestore"
+    orderBy,
+    query,
+    updateDoc} from "firebase/firestore"
+import { auth } from "./auth";
 import { app as firebase } from "./firebase-config";
 
-const auth = getAuth(firebase);
 const db = getFirestore(firebase);
 
 
@@ -17,10 +20,24 @@ export function saveTask (task) {
         task,
         userUid: user.uid,
         userEmail: user.email,
-        date: serverTimestamp(),
+        date: new Date(),
     });
 };
 
-export function getTasks () {
-    return getDocs(collection(db, "tasks"))
-};
+export function onGetTaks (callback) {
+    return onSnapshot(q, callback);
+}
+
+export function deleteTask (id) {
+    return deleteDoc(doc(db, "tasks", id));
+}
+
+export function getTask (id) {
+    return getDoc(doc(db, "tasks", id));
+}
+
+export function updateTask (id, newField) {
+    return updateDoc(doc(db, "tasks", id), newField);
+}
+
+export const q = query(collection(db, "tasks"), orderBy('date', 'desc'));

@@ -32,13 +32,9 @@ export const onNavigate = (pathname) => {
 
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      if (user.emailVerified) {
-        console.log(user.email, user.uid)
-        onNavigate('/home');
-      } else {
-        onNavigate('/');
-      };
+      user.emailVerified ? onNavigate("/home") : onNavigate("/");
     } else {
       onNavigate('/');
     }
   });
+  

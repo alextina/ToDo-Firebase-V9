@@ -1,57 +1,103 @@
-import { logOut } from "../firebase/auth";
-import { saveTask, getTasks } from "../firebase/firestore";
+import { auth, logOut } from "../firebase/auth";
+import { saveTask, onGetTaks, deleteTask, getTask, updateTask } from "../firebase/firestore";
 
 export const Home = (onNavigate) => {
     
     const sectionHome = document.createElement("section");
-    const divMenu = document.createElement("div");
+    const sectionMenu = document.createElement("section");
+    let userEmail = document.createElement("h1");
     const buttonLogOut = document.createElement("button");
+    const iconLogOut = document.createElement("i");
     const formTask = document.createElement("form");
-    const labelTask = document.createElement("label");
     const inputTask = document.createElement("input");
-    const divAllTasks = document.createElement("button");
-    const divAllTask = document.createElement("div");
+    const buttonSave = document.createElement("button");
+    const allTasks = document.createElement("section");
 
-    divMenu.id = "divMenu";
-    buttonLogOut.className = "smallButton";
-    buttonLogOut.textContent = "Sign Out";
+    sectionHome.className = "container home";
+    sectionMenu.id = "sectionMenu";
+    userEmail.innerHTML = "Hi, correo@electronico.com";
+    iconLogOut.className = "fa-solid fa-right-from-bracket";
+    buttonLogOut.append(iconLogOut);
     formTask.id = "formTask";
-    labelTask.textContent = "Task:";
-    labelTask.htmlFor = "task";
-    inputTask.className = "task";
     inputTask.type = "text";
-    inputTask.className = "input-task";
-    inputTask.placeholder = "Buy cats food...";
-    divAllTasks.type = "submit";
-    divAllTasks.textContent = "Save"
-    divAllTask.id = "divAllTasks"
-    
-    let html = "";
-    function getData () {
-        getTasks()
-            .then((querySnapshot) => {
-                querySnapshot.forEach(doc => {
-                    // console.log(doc.data());
-                    const task = doc.data();
-                    const taskDate = task.date.toDate();
-                    const formattedDate = taskDate.toLocaleDateString("es-ES", {
-                      day: "2-digit",
-                      month: "2-digit",
-                      year: "2-digit"
-                    });
-                    html += `
-                    <div class= "divOneTask">
-                    <p class = "oneTask">${task.task}</p>
-                    <p class = "info">Por ${task.userEmail} el ${formattedDate}.</p>                    
-                    </div> 
-                    `
-                })
-                divAllTask.innerHTML = html;
-            }).catch((error) => {
-                console.log(error);
+    inputTask.placeholder = "Write your task here...";
+    buttonSave.type = "submit";
+    buttonSave.textContent = "Save"
+    allTasks.id = "allTasks"
+
+    let editStatus = false;
+    let id = "";
+
+    onGetTaks((querySnapshot) => {
+        let html = "";
+        querySnapshot.forEach(doc => {
+            const userUid = auth.currentUser.uid;
+            const task = doc.data();
+            const taskUserUid = task.userUid;
+            const taskDate = task.date.toDate();
+            const formattedDate = taskDate.toLocaleDateString("es-ES", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit"
+            });
+            if ( userUid === taskUserUid ) {
+                html += `
+                <article>
+                    <h3 class = "oneTask">${task.task}</h3>
+                    <section class = "info">
+                        <p class = "info">By ${task.userEmail} on ${formattedDate}.</p>
+                        <button data-id="${doc.id}" class="fa-solid fa-pen-to-square"></button>
+                        <button data-id="${doc.id}" class="fa-solid fa-trash"></button>          
+                    </section>
+                </article> 
+                `;
+            };
+        });
+        allTasks.innerHTML = html;
+
+        console.log(auth.currentUser.email);
+        userEmail.innerHTML = `Hi, ${auth.currentUser.displayName || auth.currentUser.email}`;
+        
+        const buttonsDelete = allTasks.querySelectorAll(".fa-trash");
+        buttonsDelete.forEach((buttonDelete) => {
+            buttonDelete.addEventListener("click", ({target: {dataset}}) => {
+                confirm("Do you want to delete yoyr task?") ? deleteTask(dataset.id) : null;
             })
-    }
-    getData();
+        });
+
+        const buttonsEdit = allTasks.querySelectorAll(".fa-pen-to-square");
+        buttonsEdit.forEach((buttonEdit) => {
+            buttonEdit.addEventListener("click", async ({target: {dataset}}) => {
+                const doc = await getTask(dataset.id);
+                const task = doc.data();
+
+                inputTask.value = task.task;
+                editStatus = true;
+                id = doc.id; // dataset.id;
+                buttonSave.textContent = "Update";
+            })
+        })
+    });
+
+    // evento al formulario => fx para la tarea es enviado
+    formTask.addEventListener("submit", (e) => {
+        e.preventDefault();
+        if (inputTask.value !== "") {
+          const task = inputTask.value;
+
+          if (!editStatus) {
+            saveTask(task);
+          } else {
+            updateTask(id, {task});
+            editStatus = false;
+            buttonSave.textContent = "Save";
+          }
+        }
+         // reseteando el formulario
+        formTask.reset();
+      });
 
     // boton de cerrar sesión
     buttonLogOut.addEventListener("click", () => {
@@ -63,19 +109,8 @@ export const Home = (onNavigate) => {
             })
     });
 
-    // evento al formulario => fx para la tarea es enviado
-    formTask.addEventListener("submit", (e) => {
-        e.preventDefault();
-        if (inputTask.value !== "") {
-          const task = inputTask.value;
-          saveTask(task);
-        }
-         // reseteando el formulario
-        formTask.reset();
-      });
-
-    divMenu.append(buttonLogOut);
-    formTask.append(labelTask, inputTask, divAllTasks);
-    sectionHome.append(divMenu, formTask, divAllTask);
+    sectionMenu.append(userEmail, buttonLogOut);
+    formTask.append(inputTask, buttonSave);
+    sectionHome.append(sectionMenu, formTask, allTasks);
     return sectionHome;
 };

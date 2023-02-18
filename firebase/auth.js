@@ -1,7 +1,7 @@
 import { getAuth, GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendEmailVerification } from "firebase/auth"
 import { app as firebase } from "./firebase-config"; // tambien puede ser -> import { app } from "./firebase-config.js" y se reemplaza app por firebase
 
-const auth = getAuth(firebase);
+export const auth = getAuth(firebase);
 const provider = new GoogleAuthProvider();
 auth.languageCode = "es";
 
