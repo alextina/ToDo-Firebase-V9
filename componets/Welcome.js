@@ -1,6 +1,8 @@
 import logoImg from "../media/logo-todo.png";
-import logoGoogle from "../media/google-logo.png";
-import { emailVerification, logIn, signInWithGoogle, sigUpWithEmail } from "../firebase/firestore-auth";
+import buttonGoogle1 from "../media/btn_google_signin_dark_normal_web.png";
+import buttonGoogle2 from "../media/btn_google_signin_dark_pressed_web.png";
+import { emailVerification, logIn, signInWithGoogle, sigUpWithEmail } from "../firebase/auth";
+import { inputComplet, validateForm } from "../solo-functions.js/validate-inputs";
 
 export const Welcome = (onNavigate) => {
     const form = document.createElement("form");
@@ -12,117 +14,86 @@ export const Welcome = (onNavigate) => {
     const inputPassword = document.createElement("input");
     const errorPassword = document.createElement("p");
     const divButtons = document.createElement("div");
-    const buttonLogin = document.createElement("button");
-    const invalidLogin = document.createElement("p");
-    const buttonSignup = document.createElement("button");
-    const buttonGoogle = document.createElement("div");
+    const buttonSignIn = document.createElement("button");
+    const invalidSignIn = document.createElement("p");
+    const buttonSignUp = document.createElement("button");
     const imgGoogle = document.createElement("img");
-    const txtGoogle = document.createElement("span");
     const invalidForm = document.createElement("p");
     const validForm = document.createElement("p");
+    const messageForm = document.createElement("p");
 
+    form.className ="container welcome";
+    form.autocomplete = "off";
+    logo.src = logoImg;
+    logo.alt = "logo-todo";
+    logo.className = "logoTodo";
+    labelEmail.htmlFor = "email";
     labelEmail.textContent = "E-mail";
+    inputEmail.name = "email";
+    inputEmail.type = "email";
+    inputEmail.id = "email";
+    inputEmail.required = true;
+    errorEmail.className = "hide";
+    errorEmail.id = "error-email";
     errorEmail.textContent = "El e-mail debe tener formato válido."
+    labelPassword.htmlFor = "password";
     labelPassword.textContent = "Password";
+    inputPassword.name = "password";
+    inputPassword.type = "password";
+    inputPassword.id = "password";
+    inputPassword.required = true;
+    errorPassword.className = "hide";
+    errorPassword.id = "error-password";
     errorPassword.textContent = "La contraseña debe tener entre 8 y 16 carácteres. Al menos un número, al menos una mayúscula y al menos un símbolo. Sin espacios."
-    buttonLogin.textContent = "Log In";
-    invalidLogin.textContent = "Verifica tu correo y luego inicia sesión";
-    buttonSignup.textContent = "Sign Up";
-    txtGoogle.textContent = "Continue with Google";
+    buttonSignIn.type = "button";
+    buttonSignIn.className = "smallButton";
+    buttonSignIn.textContent = "SignIn";
+    invalidSignIn.className = "hide";
+    invalidSignIn.id = "error-login";
+    invalidSignIn.textContent = "Verifica tu correo y luego inicia sesión";
+    buttonSignUp.type = "submit";
+    buttonSignUp.className = "smallButton";
+    buttonSignUp.textContent = "SignUp";
+    imgGoogle.src = buttonGoogle1;
+    imgGoogle.onmouseout = () => {
+        imgGoogle.src = buttonGoogle1;
+    }
+    imgGoogle.onmouseover = () => {
+        imgGoogle.src = buttonGoogle2;
+    }
+    imgGoogle.alt = "logo-google";
+    imgGoogle.className = "googleButton";
+    invalidForm.className = "hide";
+    invalidForm.id = "error-form";
     invalidForm.textContent = "Verifica los campos.";
-    validForm.textContent = "Formulario enviado correctamente";
+    validForm.className = "hide";
+    validForm.id = "correct-form";
+    validForm.textContent = "Formulario enviado correctamente, ahora verifica tu correo";
+    messageForm.className = "hide";
+    messageForm.id = "message-form";
+    messageForm.textContent = "Verifica tu email.";
 
-    form.setAttribute("class","container");
-    form.setAttribute("autocomplete", "off")
-    logo.setAttribute("src", logoImg);
-    logo.setAttribute("alt", "logo-todo");
-    logo.setAttribute("class", "logoTodo")
-    labelEmail.setAttribute("for","email");
-    inputEmail.setAttribute("name","email");
-    inputEmail.setAttribute("type","email");
-    inputEmail.setAttribute("id","email");
-    inputEmail.setAttribute("required","required");
-    errorEmail.setAttribute("class","hide");
-    errorEmail.setAttribute("id","error-email");
-    labelPassword.setAttribute("for","password");
-    inputPassword.setAttribute("name","password");
-    inputPassword.setAttribute("type","password");
-    inputPassword.setAttribute("id","password");
-    inputPassword.setAttribute("required","required");
-    errorPassword.setAttribute("class","hide");
-    errorPassword.setAttribute("id","error-password");
-    buttonLogin.setAttribute("type","button");
-    buttonLogin.setAttribute("class","smallButton");
-    invalidLogin.setAttribute("class", "hide");
-    invalidLogin.setAttribute("id", "error-login");
-    buttonSignup.setAttribute("type","submit");
-    buttonSignup.setAttribute("class","smallButton");
-    buttonGoogle.setAttribute("type","button")
-    buttonGoogle.setAttribute("class","googleButton")
-    imgGoogle.setAttribute("src", logoGoogle);
-    imgGoogle.setAttribute("alt", "logo-google");
-    invalidForm.setAttribute("class","hide");
-    invalidForm.setAttribute("id","error-form");
-    validForm.setAttribute("class","hide");
-    validForm.setAttribute("id","correct-form");
-
-    buttonGoogle.append(imgGoogle, txtGoogle);
-
-    // Validando inputs del formulario
-    const expresions = {
-        email: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
-        password: /^(?=(?:.*\d))(?=.*[A-Z])(?=.*[a-z])(?=.*[.,*!?¿¡/#$%&])\S{8,16}$/,
-    };
-
-    const inputComplet = {
-        email: false,
-        password: false,
-    };
-
-    const validateForm = (e) => {
-        // usando el atributo "name"
-        // console.log(e.target.name)
-        switch (e.target.name) {
-            case "email":
-                validateInput(expresions.email, e.target, 'email')
-                break;
-            case "password":
-                validateInput(expresions.password, e.target, 'password')
-                break;
-            default:
-                break;
-        }
-    };
-
-    const validateInput = (expresion, input, name) => {
-        if (expresion.test(input.value)) {
-            document.getElementById(`error-${name}`).classList.replace("error", "hide");
-            inputComplet[name] = true;
-        } else {
-            document.getElementById(`error-${name}`).classList.replace("hide", "error");
-            inputComplet[name] = true;
-        }
-    };
-
+    // validando formularios (importando fx desde validate-inputs.js)
     inputEmail.addEventListener('keyup', validateForm);
     inputEmail.addEventListener('blur', validateForm);
     inputPassword.addEventListener('keyup', validateForm);
     inputPassword.addEventListener('blur', validateForm);
 
-    // Crear cuenta con correo y contraseña 
+    // fx para crear una cuenta con correo y contraseña
     function signUp () {
         const email = inputEmail.value;
         const password = inputPassword.value;
 
         sigUpWithEmail(email, password)
-            .then(() => {
-                alert("Verifica tu correo y luego inicia sesión.");
+            .then((result) => {
+                const user = result.user;
                 emailVerification();
             }).catch((error) => {
-                alert(error.code);
+                console.log(error.code);
             })
     };
 
+    // dandole funcionalidad a al foromnulario de crear cuenta
     form.addEventListener("submit", (e) => {
         e.preventDefault();
         if (inputComplet.email && inputComplet.password) {
@@ -136,8 +107,8 @@ export const Welcome = (onNavigate) => {
         }
     });
 
-    // Ingreso de sesión con correo y contraseña
-    buttonLogin.addEventListener("click", () => {
+    // fx para iniciar sesión con correo y contraseña
+    function emailLogin () {
         const email = inputEmail.value;
         const password = inputPassword.value;
 
@@ -145,33 +116,53 @@ export const Welcome = (onNavigate) => {
             .then((result) => {
                 const user = result.user;
                 if(user.emailVerified === false) {
-                    document.getElementById("error-login").classList.replace("hide", "error");
+                    document.getElementById("message-form").classList.replace("hide", "correct");
+                    // alert("Verifica tu email.")
                 } else {
-                    console.log("Email verificado");
                     onNavigate("/home");
                 }
             }).catch((error) => {
-                console.log(error.code);
-                console.log(error.message);
-                alert(error.message);
-            })
+                console.log(error);
+            });
+    };
+
+    // dandole funcionalidad al botón de iniciar sesión
+    buttonSignIn.addEventListener("click", () => {
+        if (inputComplet.email && inputComplet.password) {
+            emailLogin();
+        } else {
+            alert("Revisa tus datos.");
+        }
     });
 
-    // Ingreso de sesión con google
-    buttonGoogle.addEventListener("click", () => {
+    // dandole funcionalidad al botón de google
+    imgGoogle.addEventListener("click", () => {
         signInWithGoogle()
             .then((result) => {
                 const user = result.user;
-                console.log(`El usuario logueado es ${user.displayName}.`);
                 onNavigate("/home");
             }).catch((error) => {
-                console.log(error.code);
-                console.log(error.message);
+                console.log(error);
             })
     });
-
+    
     // Mostrando el contenido
-    divButtons.append(buttonLogin, buttonSignup);
-    form.append(logo, labelEmail, inputEmail, errorEmail, labelPassword, inputPassword, errorPassword, divButtons, buttonGoogle, validForm, invalidForm, invalidLogin);
+    // buttonGoogle.append(imgGoogle, txtGoogle);
+    divButtons.append(buttonSignIn, buttonSignUp);
+    form.append(
+        logo,
+        labelEmail,
+        inputEmail,
+        errorEmail,
+        labelPassword,
+        inputPassword,
+        errorPassword,
+        divButtons,
+        imgGoogle,
+        validForm,
+        invalidForm,
+        invalidSignIn,
+        messageForm
+        );
     return form;
 };
