@@ -5,15 +5,17 @@ import { emailVerification, logIn, signInWithGoogle, sigUpWithEmail } from "../f
 import { inputComplet, validateForm } from "../solo-functions.js/validate-inputs";
 
 export const Welcome = (onNavigate) => {
-    const form = document.createElement("form");
+    const sectionWelcome = document.createElement("section");
+    const header = document.createElement("header");
     const logo = document.createElement("img");
-    const labelEmail = document.createElement("label");
+    const title = document.createElement("h1");
+    const subTitle = document.createElement("h3");
+    const form = document.createElement("form");
     const inputEmail = document.createElement("input");
     const errorEmail = document.createElement("p");
-    const labelPassword = document.createElement("label");
     const inputPassword = document.createElement("input");
     const errorPassword = document.createElement("p");
-    const divButtons = document.createElement("div");
+    const sectionButtons = document.createElement("section");
     const buttonSignIn = document.createElement("button");
     const invalidSignIn = document.createElement("p");
     const buttonSignUp = document.createElement("button");
@@ -22,25 +24,26 @@ export const Welcome = (onNavigate) => {
     const validForm = document.createElement("p");
     const messageForm = document.createElement("p");
 
-    form.className ="container welcome";
+    sectionWelcome.className = "container welcome";
+    header.className = "header"
+    title.textContent = "Welcome to your to-do list!";
+    subTitle.textContent = "To start, please sign in.";
     form.autocomplete = "off";
     logo.src = logoImg;
     logo.alt = "logo-todo";
     logo.className = "logoTodo";
-    labelEmail.htmlFor = "email";
-    labelEmail.textContent = "E-mail";
     inputEmail.name = "email";
     inputEmail.type = "email";
     inputEmail.id = "email";
+    inputEmail.placeholder = "E-mail here";
     inputEmail.required = true;
     errorEmail.className = "hide";
     errorEmail.id = "error-email";
     errorEmail.textContent = "El e-mail debe tener formato válido."
-    labelPassword.htmlFor = "password";
-    labelPassword.textContent = "Password";
     inputPassword.name = "password";
     inputPassword.type = "password";
     inputPassword.id = "password";
+    inputPassword.placeholder = "Password here"
     inputPassword.required = true;
     errorPassword.className = "hide";
     errorPassword.id = "error-password";
@@ -51,6 +54,7 @@ export const Welcome = (onNavigate) => {
     invalidSignIn.className = "hide";
     invalidSignIn.id = "error-login";
     invalidSignIn.textContent = "Verifica tu correo y luego inicia sesión";
+    sectionButtons.className = "sectionButtons";
     buttonSignUp.type = "submit";
     buttonSignUp.className = "smallButton";
     buttonSignUp.textContent = "SignUp";
@@ -101,7 +105,7 @@ export const Welcome = (onNavigate) => {
             signUp();
             setTimeout(() => {
                 onNavigate("/");
-            }, 3000)
+            }, 5000)
         } else {
             document.getElementById("error-form").classList.replace("hide", "error  ");
         }
@@ -147,22 +151,20 @@ export const Welcome = (onNavigate) => {
     });
     
     // Mostrando el contenido
-    // buttonGoogle.append(imgGoogle, txtGoogle);
-    divButtons.append(buttonSignIn, buttonSignUp);
+    header.append(logo,title, subTitle);
+    sectionButtons.append(buttonSignIn, buttonSignUp);
     form.append(
-        logo,
-        labelEmail,
         inputEmail,
         errorEmail,
-        labelPassword,
         inputPassword,
         errorPassword,
-        divButtons,
+        sectionButtons,
         imgGoogle,
         validForm,
         invalidForm,
         invalidSignIn,
         messageForm
         );
-    return form;
+    sectionWelcome.append(header, form)
+    return sectionWelcome;
 };

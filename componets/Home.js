@@ -45,9 +45,9 @@ export const Home = (onNavigate) => {
             if ( userUid === taskUserUid ) {
                 html += `
                 <article>
-                    <h3 class = "oneTask">${task.task}</h3>
+                    <h3 class = "oneTask"><i class="fa-solid fa-circle-check"></i> ${task.task}</h3>
                     <section class = "info">
-                        <p class = "info">By ${task.userEmail} on ${formattedDate}.</p>
+                        <p class = "info">${formattedDate}</p>
                         <button data-id="${doc.id}" class="fa-solid fa-pen-to-square"></button>
                         <button data-id="${doc.id}" class="fa-solid fa-trash"></button>          
                     </section>
